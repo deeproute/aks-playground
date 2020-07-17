@@ -12,15 +12,15 @@ set -euxo pipefail
 az configure --defaults location=westeurope
 
 # Network Config
-VNET_RG=custom-vnet-test
+VNET_RG=vnet-custom
 VNET_NAME=aks-custom-vnet
 VNET_ADDR_PREFIX=192.168.0.0/16
-VNET_SUBNET_NAME=aks-custom-vnet-subnet
+VNET_SUBNET_NAME=custom-vnet-subnet
 VNET_SUBNET_ADDR_PREFIX=192.168.1.0/24
-VNET_SUBNET_ROUTETABLE_NAME=aks-custom-routetable
+VNET_SUBNET_ROUTETABLE_NAME=custom-subnet-routetable
 
 # AKS Config
-AKS_RG=aks-custom-vnet-test
+AKS_RG=aks-custom-vnet
 AKS_NAME=aks-custom-vnet
 AKS_K8S_VERSION=1.18.4
 AKS_NODECOUNT=3
@@ -57,8 +57,8 @@ AAD_SP_PASS=$(echo $AAD_SP | jq -r '.password')
 sleep 5
 
 # Assign this roles so the cluster can update the route table
-az role assignment create --assignee $AAD_SP_APPID --scope $VNET_ID --role "Network Contributor"
-az role assignment create --assignee $AAD_SP_APPID --scope $SUBNET_ID --role "Network Contributor"
+#az role assignment create --assignee $AAD_SP_APPID --scope $VNET_ID --role "Network Contributor"
+#az role assignment create --assignee $AAD_SP_APPID --scope $SUBNET_ID --role "Network Contributor"
 az role assignment create --assignee $AAD_SP_APPID --scope $ROUTETABLE_ID --role "Network Contributor"
 
 # Create the actual AKS Cluster with Kubenet, custom VNET and Service Principal with right permissions 
